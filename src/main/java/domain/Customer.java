@@ -1,61 +1,28 @@
 package domain;
 
-import base.domain.BaseEntity;
+import javax.persistence.*;
+import java.util.List;
 
-import java.util.Date;
+@Entity
+@Table(name = Customer.TABLE_NAME)
+public class Customer extends Person {
 
-public class Customer extends BaseEntity<Long> {
+    public static final String TABLE_NAME = "customer";
 
-    private String firstName;
+    @ManyToOne
+    private Address address;
 
-    private String lastName;
-
-    private Date dateOfBirth;
-
-    private String phoneNumber;
-
-    private String Ssn;
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    private List<Account> accounts;
 
     public Customer() {
     }
 
-    public String getFirstName() {
-        return firstName;
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getSsn() {
-        return Ssn;
-    }
-
-    public void setSsn(String ssn) {
-        Ssn = ssn;
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 }
