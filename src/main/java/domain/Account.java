@@ -63,4 +63,12 @@ public class Account extends BaseEntity<Long> {
     public void setBranch(Branch branch) {
         this.branch = branch;
     }
+
+    public Customer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Customer owner) {
+        this.owner = owner;
+    }
 }
