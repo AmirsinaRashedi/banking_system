@@ -4,13 +4,15 @@ import base.domain.BaseEntity;
 import base.repository.BaseRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.io.Serializable;
+import java.util.List;
 
 public abstract class BaseRepositoryImpl<T extends BaseEntity<ID>, ID extends Serializable>
         implements BaseRepository<T, ID> {
 
 
-    protected EntityManager em;
+    protected final EntityManager em;
 
     public BaseRepositoryImpl(EntityManager em) {
 
@@ -21,21 +23,17 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity<ID>, ID extends Se
     @Override
     public T save(T t) {
 
-        em.persist(t);
+        if (t.getId() != null)
+
+            em.persist(t);
+
+        else
+
+            em.merge(t);
 
         return t;
     }
 
-    @Override
-    public T update(T t) {
-
-        T newEntity;
-
-        newEntity = em.merge(t);
-
-        return newEntity;
-
-    }
 
     @Override
     public void delete(T t) {
@@ -55,6 +53,41 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity<ID>, ID extends Se
         newEntity = em.find(getClassType(), id);
 
         return newEntity;
+    }
+
+    @Override
+    public List<T> findAll() {
+
+        return em.createQuery("from " + getClassType().getSimpleName(), getClassType()).getResultList();
+    }
+
+    @Override
+    public void beginTransaction() {
+
+        if (!getTransaction().isActive())
+            getTransaction().begin();
+    }
+
+    @Override
+    public void commitTransaction() {
+
+        if (getTransaction().isActive())
+            getTransaction().commit();
+    }
+
+    @Override
+    public void rollbackTransaction() {
+
+        if (getTransaction().isActive())
+            getTransaction().rollback();
+
+    }
+
+    @Override
+    public EntityTransaction getTransaction() {
+
+        return em.getTransaction();
+
     }
 
 
