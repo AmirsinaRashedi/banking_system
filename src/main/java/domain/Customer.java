@@ -25,4 +25,12 @@ public class Customer extends Person {
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 }
