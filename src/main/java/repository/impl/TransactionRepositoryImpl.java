@@ -2,6 +2,7 @@ package repository.impl;
 
 import base.repository.impl.BaseRepositoryImpl;
 import domain.Account;
+import domain.Card;
 import domain.Transaction;
 import repository.AccountRepository;
 import repository.CardRepository;
@@ -79,10 +80,12 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
 
         } while (senderCardNumber.length() != 16);
 
-        if (cardRepository.findByCardNumber(receiverCardNumber) == null || !cardRepository.findByCardNumber(receiverCardNumber).getActive())
+        Card senderCard = cardRepository.findByCardNumber(receiverCardNumber);
+
+        if (senderCard == null || !senderCard.getActive())
             throw new RuntimeException("this card number is invalid");
 
-        receiverAccount = accountRepository.findByCard(cardRepository.findByCardNumber(receiverCardNumber));
+        receiverAccount = accountRepository.findByCard(senderCard);
 
         System.out.print("enter the amount you want to transfer: ");
 
@@ -94,6 +97,8 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
         if (amount + 500 > senderAccount.getBalance())
             throw new RuntimeException("low balance");
 
+        validateOwner(senderCard);
+
         senderAccount.setBalance(senderAccount.getBalance() - (amount + 500));
 
         receiverAccount.setBalance(receiverAccount.getBalance() + amount);
@@ -103,5 +108,52 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
         accountRepository.save(receiverAccount);
 
         createTransaction(senderAccount, receiverAccount, amount);
+    }
+
+    @Override
+    public void validateOwner(Card card) {
+
+        Scanner stringInput = new Scanner(System.in);
+
+        Scanner intInput = new Scanner(System.in);
+
+        int flagCount = 0;
+
+        if (card.getSecondaryPassword() == null)
+            throw new RuntimeException("this card does not have a secondary password");
+
+        while (true) {
+
+            System.out.print("enter cvv2:");
+
+            int cvv2 = intInput.nextInt();
+
+            System.out.print("enter secondary password:");
+
+            String secondaryPassword = stringInput.nextLine();
+
+            if (!card.getSecondaryPassword().equals(secondaryPassword))
+                flagCount++;
+
+            if (flagCount == 3) {
+
+                System.out.println("you have entered an used an incorrect password 3 times. your card is suspended! ");
+
+                card.setActive(false);
+
+                cardRepository.save(card);
+
+                throw new RuntimeException("card is now disabled");
+
+            }
+
+            if (card.getCvv2() != cvv2 || !card.getSecondaryPassword().equals(secondaryPassword))
+                throw new RuntimeException("invalid information");
+            else
+                break;
+
+        }
+
+
     }
 }

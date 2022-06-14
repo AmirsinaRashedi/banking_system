@@ -18,14 +18,12 @@ public class Account extends BaseEntity<Long> {
     private Boolean isActive;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Customer owner;
 
     @OneToOne
     private Card card;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Branch branch;
 
 
@@ -70,5 +68,16 @@ public class Account extends BaseEntity<Long> {
 
     public void setOwner(Customer owner) {
         this.owner = owner;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "balance=" + balance +
+                ", isActive=" + isActive +
+                ", owner=" + owner +
+                ", card=" + card +
+                ", branch=" + branch +
+                '}';
     }
 }

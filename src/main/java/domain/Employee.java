@@ -1,7 +1,6 @@
 package domain;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -12,7 +11,6 @@ public class Employee extends Person {
     public static final String TABLE_NAME = "employee";
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Branch workPlace;
 
     @ManyToOne

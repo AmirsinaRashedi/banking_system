@@ -8,4 +8,6 @@ public interface CustomerRepository extends BaseRepository<Customer, Long> {
     Customer createCustomer();
 
     Customer findBySsn(String Ssn);
+
+    void setAccountRepository(AccountRepository accountRepository);
 }

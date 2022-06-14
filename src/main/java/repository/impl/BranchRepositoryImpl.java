@@ -37,6 +37,10 @@ public class BranchRepositoryImpl extends BaseRepositoryImpl<Branch, Long>
 
         newBranch.setAddress(addressRepository.createAddress());
 
+        newBranch.setManager(null);
+
+        newBranch = save(newBranch);
+
         System.out.println("define branch manager: ");
 
         newBranch.setManager(employeeRepository.createEmployee(newBranch));

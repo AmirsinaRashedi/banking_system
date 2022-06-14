@@ -10,6 +10,6 @@ public interface CardRepository extends BaseRepository<Card, Long> {
 
     Card findByCardNumber(String cardNumber);
 
-    void changePassword(Card card);
+    void changePassword();
 
 }

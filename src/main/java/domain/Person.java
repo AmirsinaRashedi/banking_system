@@ -4,7 +4,6 @@ import base.domain.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import java.util.Date;
 
 @MappedSuperclass
 public abstract class Person extends BaseEntity<Long> {
@@ -15,8 +14,8 @@ public abstract class Person extends BaseEntity<Long> {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+//    @Column(name = "date_of_birth")
+//    private Date dateOfBirth = null;
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -43,13 +42,13 @@ public abstract class Person extends BaseEntity<Long> {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
+//    public Date getDateOfBirth() {
+//        return dateOfBirth;
+//    }
+//
+//    public void setDateOfBirth(Date dateOfBirth) {
+//        this.dateOfBirth = dateOfBirth;
+//    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -65,5 +64,15 @@ public abstract class Person extends BaseEntity<Long> {
 
     public void setSsn(String ssn) {
         Ssn = ssn;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", Ssn='" + Ssn + '\'' +
+                '}';
     }
 }

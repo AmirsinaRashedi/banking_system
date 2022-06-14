@@ -5,7 +5,6 @@ import base.domain.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Date;
 
 @Entity
 @Table(name = Card.TABLE_NAME)
@@ -19,8 +18,8 @@ public class Card extends BaseEntity<Long> {
     @Column(name = "cvv2")
     private Integer cvv2;
 
-    @Column(name = "expiration_date")
-    private Date expirationDate;
+//    @Column(name = "expiration_date")
+//    private Date expirationDate = null;
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -50,13 +49,13 @@ public class Card extends BaseEntity<Long> {
         this.cvv2 = cvv2;
     }
 
-    public Date getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(Date expirationDate) {
-        this.expirationDate = expirationDate;
-    }
+//    public Date getExpirationDate() {
+//        return expirationDate;
+//    }
+//
+//    public void setExpirationDate(Date expirationDate) {
+//        this.expirationDate = expirationDate;
+//    }
 
     public Boolean getActive() {
         return isActive;

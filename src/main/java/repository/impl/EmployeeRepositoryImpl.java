@@ -6,7 +6,6 @@ import domain.Employee;
 import repository.EmployeeRepository;
 
 import javax.persistence.EntityManager;
-import java.util.Date;
 import java.util.Scanner;
 
 public class EmployeeRepositoryImpl extends BaseRepositoryImpl<Employee, Long>
@@ -39,9 +38,9 @@ public class EmployeeRepositoryImpl extends BaseRepositoryImpl<Employee, Long>
         System.out.print("enter social_security_number: ");
         newEmployee.setSsn(stringInput.nextLine());
 
-        System.out.print("enter date_of_birth in order of (year , month , day) with a" +
-                " space between each number : ");
-        newEmployee.setDateOfBirth(new Date(intInput.nextInt(), intInput.nextInt() - 1, intInput.nextInt()));
+//        System.out.print("enter date_of_birth in order of (year , month , day) with a" +
+//                " space between each number : ");
+//        newEmployee.setDateOfBirth(new Date(intInput.nextInt(), intInput.nextInt() - 1, intInput.nextInt()));
 
         System.out.print("enter phone_number: ");
         newEmployee.setPhoneNumber(stringInput.nextLine());

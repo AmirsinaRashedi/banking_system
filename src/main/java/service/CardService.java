@@ -8,6 +8,6 @@ public interface CardService extends BaseService<Card, Long> {
 
     Card createCard(Account account);
 
-    void changePassword(Card card);
+    void changePassword();
 
 }

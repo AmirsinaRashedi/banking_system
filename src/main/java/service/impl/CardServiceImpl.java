@@ -48,13 +48,13 @@ public class CardServiceImpl extends BaseServiceImpl<Card, Long>
     }
 
     @Override
-    public void changePassword(Card card) {
+    public void changePassword() {
 
         try {
 
             cardRepository.beginTransaction();
 
-            cardRepository.changePassword(card);
+            cardRepository.changePassword();
 
             cardRepository.commitTransaction();
 

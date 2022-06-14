@@ -60,4 +60,13 @@ public class Address extends BaseEntity<Long> {
         this.postalCode = postalCode;
     }
 
+    @Override
+    public String toString() {
+        return "Address{" +
+                "province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", streetName='" + streetName + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                '}';
+    }
 }

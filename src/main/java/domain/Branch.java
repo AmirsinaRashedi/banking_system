@@ -3,7 +3,6 @@ package domain;
 import base.domain.BaseEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -14,11 +13,9 @@ public class Branch extends BaseEntity<Long> {
     public static final String TABLE_NAME = "bank_branch";
 
     @OneToOne
-    @JoinColumn(nullable = false)
     private Employee manager;
 
     @OneToOne
-    @JoinColumn(nullable = false)
     private Address address;
 
     public Branch() {
@@ -38,5 +35,12 @@ public class Branch extends BaseEntity<Long> {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Branch{" +
+                "address=" + address +
+                '}';
     }
 }

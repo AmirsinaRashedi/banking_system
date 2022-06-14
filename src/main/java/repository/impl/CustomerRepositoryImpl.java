@@ -8,8 +8,8 @@ import repository.AddressRepository;
 import repository.CustomerRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Long>
@@ -19,6 +19,12 @@ public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Long>
 
     private AccountRepository accountRepository;
 
+    public CustomerRepositoryImpl(EntityManager em, AddressRepository addressRepository) {
+        super(em);
+
+        this.addressRepository = addressRepository;
+    }
+
     public CustomerRepositoryImpl(EntityManager em, AddressRepository addressRepository, AccountRepository accountRepository) {
         super(em);
 
@@ -26,6 +32,10 @@ public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Long>
 
         this.accountRepository = accountRepository;
 
+    }
+
+    public void setAccountRepository(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -51,9 +61,9 @@ public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Long>
         System.out.print("enter social_security_number: ");
         newCustomer.setSsn(stringInput.nextLine());
 
-        System.out.print("enter date_of_birth in order of (year , month , day) with a" +
-                " space between each number : ");
-        newCustomer.setDateOfBirth(new Date(intInput.nextInt(), intInput.nextInt() - 1, intInput.nextInt()));
+//        System.out.print("enter date_of_birth in order of (year , month , day) with a" +
+//                " space between each number : ");
+//        newCustomer.setDateOfBirth(new Date(intInput.nextInt(), intInput.nextInt() - 1, intInput.nextInt()));
 
         System.out.print("enter phone_number: ");
         newCustomer.setPhoneNumber(stringInput.nextLine());
@@ -62,6 +72,8 @@ public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Long>
 
         System.out.println("define Address: ");
         newCustomer.setAddress(addressRepository.createAddress());
+
+        newCustomer = save(newCustomer);
 
         System.out.println();
 
@@ -73,13 +85,20 @@ public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Long>
 
         newCustomer.setAccounts(accounts);
 
-        return null;
+        return newCustomer;
     }
 
     @Override
     public Customer findBySsn(String Ssn) {
-        return em.createQuery("from Customer where Customer.Ssn = :Ssn", Customer.class)
-                .setParameter("Ssn", Ssn).getSingleResult();
+
+        try {
+            return em.createQuery("from Customer C where C.Ssn = :Ssn", Customer.class)
+                    .setParameter("Ssn", Ssn).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+
+
     }
 
 

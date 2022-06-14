@@ -29,7 +29,7 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity<ID>, ID extends Se
 
         else
 
-            em.merge(t);
+            t = em.merge(t);
 
         return t;
     }

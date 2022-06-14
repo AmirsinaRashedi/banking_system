@@ -11,6 +11,7 @@ import repository.CardRepository;
 import repository.CustomerRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -66,12 +67,18 @@ public class AccountRepositoryImpl extends BaseRepositoryImpl<Account, Long>
         newAccount.setBranch(branchRepository.findAll().get(selectedBranch - 1));
 
         System.out.print("how much is the balance of your account: ");
-        newAccount.setBalance(intInput.nextInt());
+
+        int balanceAmount = intInput.nextInt();
+
+        if (balanceAmount < 0)
+            throw new RuntimeException("invalid amount");
+
+        newAccount.setBalance(balanceAmount);
 
         System.out.println("do you want to create a card for your account?(1-yes,2-no)");
 
         if (intInput.nextInt() == 1)
-            newAccount.setCard(cardRepository.createCard(newAccount));
+            cardRepository.createCard(newAccount);
 
         newAccount.setActive(true);
 
@@ -82,25 +89,37 @@ public class AccountRepositoryImpl extends BaseRepositoryImpl<Account, Long>
     @Override
     public Account findByCard(Card card) {
 
-        if (card.getActive())
-            return em.createQuery("from Account where " +
-                            "Account .card = :card", Account.class)
-                    .setParameter("card", card)
-                    .getSingleResult();
-        else
+        try {
+            if (card.getActive())
+                return em.createQuery("from Account A where " +
+                                "A.card = :card", Account.class)
+                        .setParameter("card", card)
+                        .getSingleResult();
+            else
+                return null;
+        } catch (NoResultException e) {
             return null;
+        }
+
+
     }
 
     @Override
     public List<Account> findByOwnerSsn(String Ssn) {
 
-        if (customerRepository.findBySsn(Ssn) != null)
-            return em.createQuery("from Account where Account.owner = :owner", Account.class)
-                    .setParameter("owner", customerRepository.findBySsn(Ssn))
-                    .getResultList();
+        try {
+            if (customerRepository.findBySsn(Ssn) != null)
+                return em.createQuery("from Account A where A.owner = :owner", Account.class)
+                        .setParameter("owner", customerRepository.findBySsn(Ssn))
+                        .getResultList();
 
-        else
+            else
+                return null;
+        } catch (NoResultException e) {
             return null;
+        }
+
+
     }
 
 
