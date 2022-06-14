@@ -1,6 +1,5 @@
 package service.impl;
 
-import base.repository.BaseRepository;
 import base.service.impl.BaseServiceImpl;
 import domain.Account;
 import domain.Card;
@@ -12,9 +11,9 @@ public class CardServiceImpl extends BaseServiceImpl<Card, Long>
 
     private CardRepository cardRepository;
 
-    public CardServiceImpl(BaseRepository repository, CardRepository cardRepository) {
+    public CardServiceImpl(CardRepository cardRepository) {
 
-        super(repository);
+        super(cardRepository);
 
         this.cardRepository = cardRepository;
 

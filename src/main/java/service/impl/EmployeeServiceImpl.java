@@ -1,6 +1,5 @@
 package service.impl;
 
-import base.repository.BaseRepository;
 import base.service.impl.BaseServiceImpl;
 import domain.Branch;
 import domain.Employee;
@@ -17,9 +16,9 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee, Long>
 
     private BranchRepository branchRepository;
 
-    public EmployeeServiceImpl(BaseRepository repository, EmployeeRepository employeeRepository, BranchRepository branchRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, BranchRepository branchRepository) {
 
-        super(repository);
+        super(employeeRepository);
 
         this.employeeRepository = employeeRepository;
 
