@@ -1,6 +1,5 @@
 package service.impl;
 
-import base.repository.BaseRepository;
 import base.service.impl.BaseServiceImpl;
 import domain.Transaction;
 import repository.TransactionRepository;
@@ -11,9 +10,9 @@ public class TransactionServiceImpl extends BaseServiceImpl<Transaction, Long>
 
     private TransactionRepository transactionRepository;
 
-    public TransactionServiceImpl(BaseRepository repository, TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository) {
 
-        super(repository);
+        super(transactionRepository);
 
         this.transactionRepository = transactionRepository;
 

@@ -1,6 +1,5 @@
 package service.impl;
 
-import base.repository.BaseRepository;
 import base.service.impl.BaseServiceImpl;
 import domain.Account;
 import domain.Customer;
@@ -12,8 +11,8 @@ public class AccountServiceImpl extends BaseServiceImpl<Account, Long>
 
     private AccountRepository accountRepository;
 
-    public AccountServiceImpl(BaseRepository repository, AccountRepository accountRepository) {
-        super(repository);
+    public AccountServiceImpl(AccountRepository accountRepository) {
+        super(accountRepository);
         this.accountRepository = accountRepository;
     }
 
