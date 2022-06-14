@@ -85,17 +85,16 @@ public class BankingSystemApplication {
 
                             }
 
+                            System.out.print("select the account you want to create a card for: ");
+
+                            int accountSelected = intInput.nextInt();
+
+                            if (accountSelected > 0 && accountSelected <= accountCount)
+                                ApplicationContext.cardService.createCard(ApplicationContext.accountRepository.findByOwnerSsn(ssn).get(accountSelected - 1));
+                            else
+                                throw new RuntimeException("input out of bounds");
                         } else
                             System.out.println("this user does not exist");
-
-                        System.out.print("select the account you want to create a card for: ");
-
-                        int accountSelected = intInput.nextInt();
-
-                        if (accountSelected > 0 && accountSelected <= accountCount)
-                            ApplicationContext.cardService.createCard(ApplicationContext.accountRepository.findByOwnerSsn(ssn).get(accountSelected - 1));
-                        else
-                            throw new RuntimeException("input out of bounds");
 
                         break;
                     }

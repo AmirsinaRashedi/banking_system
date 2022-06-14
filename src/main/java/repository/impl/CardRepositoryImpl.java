@@ -64,9 +64,9 @@ public class CardRepositoryImpl extends BaseRepositoryImpl<Card, Long>
 
         newCard.setActive(true);
 
-        account.setCard(newCard);
-
         newCard = save(newCard);
+
+        account.setCard(newCard);
 
         ApplicationContext.accountRepository.save(account);
 
