@@ -26,75 +26,30 @@ public class BankingSystemApplication {
                 switch (choice) {
 
                     case 1: {
+
                         ApplicationContext.customerService.createCustomer();
+
                         break;
                     }
 
                     case 2: {
-                        System.out.println("enter your Ssn:");
 
-                        String ssn = stringInput.nextLine();
-
-                        Customer currentCustomer = ApplicationContext.customerRepository.findBySsn(ssn);
-
-                        if (currentCustomer != null) {
-
-                            ApplicationContext.accountService.setUpAccount(currentCustomer);
-
-                        } else
-                            System.out.println("this user does not exist");
+                        createAccount();
 
                         break;
                     }
 
 
                     case 3: {
-                        System.out.println("enter your Ssn:");
 
-                        String ssn = stringInput.nextLine();
+                        seeAccounts();
 
-                        Customer currentCustomer = ApplicationContext.customerRepository.findBySsn(ssn);
-
-                        if (currentCustomer != null) {
-
-                            for (Account account : ApplicationContext.accountRepository.findByOwnerSsn(ssn)) {
-
-                                System.out.println(account);
-
-                            }
-
-                        } else
-                            System.out.println("this user does not exist");
                         break;
                     }
 
                     case 4: {
-                        System.out.println("enter your Ssn:");
 
-                        String ssn = stringInput.nextLine();
-
-                        Customer currentCustomer = ApplicationContext.customerRepository.findBySsn(ssn);
-
-                        int accountCount = 0;
-
-                        if (currentCustomer != null) {
-
-                            for (Account account : ApplicationContext.accountRepository.findByOwnerSsn(ssn)) {
-
-                                System.out.println(++accountCount + "- " + account);
-
-                            }
-
-                            System.out.print("select the account you want to create a card for: ");
-
-                            int accountSelected = intInput.nextInt();
-
-                            if (accountSelected > 0 && accountSelected <= accountCount)
-                                ApplicationContext.cardService.createCard(ApplicationContext.accountRepository.findByOwnerSsn(ssn).get(accountSelected - 1));
-                            else
-                                throw new RuntimeException("input out of bounds");
-                        } else
-                            System.out.println("this user does not exist");
+                        createCard();
 
                         break;
                     }
@@ -141,6 +96,80 @@ public class BankingSystemApplication {
         }
 
 
+    }
+
+    private static void createCard() {
+
+        Scanner intInput = new Scanner(System.in);
+
+        Scanner stringInput = new Scanner(System.in);
+
+        System.out.println("enter your Ssn:");
+
+        String ssn = stringInput.nextLine();
+
+        Customer currentCustomer = ApplicationContext.customerRepository.findBySsn(ssn);
+
+        int accountCount = 0;
+
+        if (currentCustomer != null) {
+
+            for (Account account : ApplicationContext.accountRepository.findByOwnerSsn(ssn)) {
+
+                System.out.println(++accountCount + "- " + account);
+
+            }
+
+            System.out.print("select the account you want to create a card for: ");
+
+            int accountSelected = intInput.nextInt();
+
+            if (accountSelected > 0 && accountSelected <= accountCount)
+                ApplicationContext.cardService.createCard(ApplicationContext.accountRepository.findByOwnerSsn(ssn).get(accountSelected - 1));
+            else
+                throw new RuntimeException("input out of bounds");
+        } else
+            System.out.println("this user does not exist");
+    }
+
+    private static void seeAccounts() {
+
+        Scanner stringInput = new Scanner(System.in);
+
+        System.out.println("enter your Ssn:");
+
+        String ssn = stringInput.nextLine();
+
+        Customer currentCustomer = ApplicationContext.customerRepository.findBySsn(ssn);
+
+        if (currentCustomer != null) {
+
+            for (Account account : ApplicationContext.accountRepository.findByOwnerSsn(ssn)) {
+
+                System.out.println(account);
+
+            }
+
+        } else
+            System.out.println("this user does not exist");
+    }
+
+    private static void createAccount() {
+
+        Scanner stringInput = new Scanner(System.in);
+
+        System.out.println("enter your Ssn:");
+
+        String ssn = stringInput.nextLine();
+
+        Customer currentCustomer = ApplicationContext.customerRepository.findBySsn(ssn);
+
+        if (currentCustomer != null) {
+
+            ApplicationContext.accountService.setUpAccount(currentCustomer);
+
+        } else
+            System.out.println("this user does not exist");
     }
 
 
