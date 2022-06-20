@@ -10,9 +10,9 @@ import java.util.List;
 public class BaseServiceImpl<T extends BaseEntity<ID>, ID extends Serializable>
         implements BaseService<T, ID> {
 
-    protected BaseRepository repository;
+    protected BaseRepository<T, ID> repository;
 
-    public BaseServiceImpl(BaseRepository repository) {
+    public BaseServiceImpl(BaseRepository<T, ID> repository) {
 
         this.repository = repository;
 
@@ -25,7 +25,7 @@ public class BaseServiceImpl<T extends BaseEntity<ID>, ID extends Serializable>
 
             repository.beginTransaction();
 
-            t = (T) repository.save(t);
+            t = repository.save(t);
 
             repository.commitTransaction();
 
@@ -64,7 +64,7 @@ public class BaseServiceImpl<T extends BaseEntity<ID>, ID extends Serializable>
 
     @Override
     public T findById(ID id) {
-        return (T) repository.findById(id);
+        return repository.findById(id);
     }
 
     @Override
