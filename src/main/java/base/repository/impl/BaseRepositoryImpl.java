@@ -23,7 +23,7 @@ public abstract class BaseRepositoryImpl<T extends BaseEntity<ID>, ID extends Se
     @Override
     public T save(T t) {
 
-        if (t.getId() != null)
+        if (t.getId() == null)
 
             em.persist(t);
 
