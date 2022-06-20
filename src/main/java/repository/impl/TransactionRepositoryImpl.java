@@ -78,14 +78,17 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
             System.out.print("enter receivers card number(it must be 16 digits): ");
             receiverCardNumber = stringInput.nextLine();
 
-        } while (senderCardNumber.length() != 16);
+        } while (receiverCardNumber.length() != 16);
 
-        Card senderCard = cardRepository.findByCardNumber(receiverCardNumber);
+        if (senderCardNumber.equals(receiverCardNumber))
+            throw new RuntimeException("can't transfer money to the same account");
 
-        if (senderCard == null || !senderCard.getActive())
+        Card reciverCard = cardRepository.findByCardNumber(receiverCardNumber);
+
+        if (reciverCard == null || !reciverCard.getActive())
             throw new RuntimeException("this card number is invalid");
 
-        receiverAccount = accountRepository.findByCard(senderCard);
+        receiverAccount = accountRepository.findByCard(reciverCard);
 
         System.out.print("enter the amount you want to transfer: ");
 
@@ -97,7 +100,7 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
         if (amount + 500 > senderAccount.getBalance())
             throw new RuntimeException("low balance");
 
-        validateOwner(senderCard);
+        validateOwner(reciverCard);
 
         senderAccount.setBalance(senderAccount.getBalance() - (amount + 500));
 
