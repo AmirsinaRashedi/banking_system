@@ -120,6 +120,8 @@ public class CardRepositoryImpl extends BaseRepositoryImpl<Card, Long>
                 System.out.print("enter new password: ");
 
                 card.setPrimaryPassword(intInput.nextInt());
+
+                save(card);
             } else
                 System.out.println("wrong password");
         } else if (choice == 2) {
@@ -130,7 +132,10 @@ public class CardRepositoryImpl extends BaseRepositoryImpl<Card, Long>
 
                 System.out.print("enter new secondary password: ");
 
-                card.setPrimaryPassword(intInput.nextInt());
+                card.setSecondaryPassword(stringInput.nextLine());
+
+                save(card);
+
             } else
                 System.out.println("wrong password");
 
