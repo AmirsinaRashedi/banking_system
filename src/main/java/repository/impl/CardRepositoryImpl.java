@@ -105,7 +105,7 @@ public class CardRepositoryImpl extends BaseRepositoryImpl<Card, Long>
             throw new RuntimeException("this card does not exist");
 
         System.out.println("1- change primary password");
-        System.out.println(card.getSecondaryPassword() == null ? "2- set secondary password" : "change secondary password");
+        System.out.println(card.getSecondaryPassword() == null ? "2- set secondary password" : "2- change secondary password");
 
         Scanner intInput = new Scanner(System.in);
 
