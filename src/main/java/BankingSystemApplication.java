@@ -71,6 +71,8 @@ public class BankingSystemApplication {
 
                     case 7: {
 
+                        ApplicationContext.transactionRepository.findTransaction();
+
                         break;
                     }
 
