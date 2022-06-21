@@ -67,7 +67,9 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
         if (cardRepository.findByCardNumber(senderCardNumber) == null || !cardRepository.findByCardNumber(senderCardNumber).getActive())
             throw new RuntimeException("this card number is invalid");
 
-        senderAccount = accountRepository.findByCard(cardRepository.findByCardNumber(senderCardNumber));
+        Card senderCard = cardRepository.findByCardNumber(senderCardNumber);
+
+        senderAccount = accountRepository.findByCard(senderCard);
 
         String receiverCardNumber;
 
@@ -83,12 +85,12 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
         if (senderCardNumber.equals(receiverCardNumber))
             throw new RuntimeException("can't transfer money to the same account");
 
-        Card reciverCard = cardRepository.findByCardNumber(receiverCardNumber);
+        Card receiverCard = cardRepository.findByCardNumber(receiverCardNumber);
 
-        if (reciverCard == null || !reciverCard.getActive())
+        if (receiverCard == null || !receiverCard.getActive())
             throw new RuntimeException("this card number is invalid");
 
-        receiverAccount = accountRepository.findByCard(reciverCard);
+        receiverAccount = accountRepository.findByCard(receiverCard);
 
         System.out.print("enter the amount you want to transfer: ");
 
@@ -100,7 +102,7 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
         if (amount + 500 > senderAccount.getBalance())
             throw new RuntimeException("low balance");
 
-        validateOwner(reciverCard);
+        validateOwner(senderCard);
 
         senderAccount.setBalance(senderAccount.getBalance() - (amount + 500));
 
@@ -142,16 +144,29 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
 
                 System.out.println("you have entered an used an incorrect password 3 times. your card is suspended! ");
 
+                cardRepository.rollbackTransaction();
+
+                cardRepository.beginTransaction();
+
                 card.setActive(false);
 
                 cardRepository.save(card);
+
+                Account suspendedAccount = accountRepository.findByCard(card);
+
+                suspendedAccount.setCard(null);
+
+                accountRepository.save(suspendedAccount);
+
+                cardRepository.commitTransaction();
+
 
                 throw new RuntimeException("card is now disabled");
 
             }
 
             if (card.getCvv2() != cvv2 || !card.getSecondaryPassword().equals(secondaryPassword))
-                throw new RuntimeException("invalid information");
+                System.out.println("invalid information!");
             else
                 break;
 
