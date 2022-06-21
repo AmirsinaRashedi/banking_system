@@ -3,10 +3,13 @@ package repository.impl;
 import base.repository.impl.BaseRepositoryImpl;
 import domain.Account;
 import domain.Card;
+import domain.Customer;
 import domain.Transaction;
 import repository.AccountRepository;
 import repository.CardRepository;
+import repository.CustomerRepository;
 import repository.TransactionRepository;
+import util.Menu;
 
 import javax.persistence.EntityManager;
 import java.sql.Date;
@@ -19,12 +22,16 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
 
     private AccountRepository accountRepository;
 
-    public TransactionRepositoryImpl(EntityManager em, AccountRepository accountRepository, CardRepository cardRepository) {
+    private CustomerRepository customerRepository;
+
+    public TransactionRepositoryImpl(EntityManager em, AccountRepository accountRepository, CardRepository cardRepository, CustomerRepository customerRepository) {
         super(em);
 
         this.accountRepository = accountRepository;
 
         this.cardRepository = cardRepository;
+
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -174,4 +181,144 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
 
 
     }
+
+    @Override
+    public void findTransaction() {
+
+        Menu.transactionMenu();
+
+        Scanner intInput = new Scanner(System.in);
+
+        Scanner stringInput = new Scanner(System.in);
+
+        int choice = intInput.nextInt();
+
+        switch (choice) {
+
+            case 1: {
+
+                Account senderAccount;
+
+                System.out.println("enter your Ssn:");
+
+                String ssn = stringInput.nextLine();
+
+                Customer currentCustomer = customerRepository.findBySsn(ssn);
+
+                int accountCount = 0;
+
+                if (currentCustomer != null) {
+
+                    for (Account account : accountRepository.findByOwnerSsn(ssn)) {
+
+                        System.out.println(++accountCount + "- " + account);
+
+                    }
+
+                    System.out.print("select the account you want to see the transactions: ");
+
+                    int accountSelected = intInput.nextInt();
+
+                    if (accountSelected > 0 && accountSelected <= accountCount)
+                        senderAccount = accountRepository.findByOwnerSsn(ssn).get(accountSelected - 1);
+                    else
+                        throw new RuntimeException("input out of bounds");
+
+                } else
+                    throw new RuntimeException("this user does not exist");
+
+                findBySenderAccount(senderAccount);
+
+                break;
+
+            }
+            case 2: {
+
+                System.out.print("enter date_of_birth in order of (year , month , day) with a" +
+                        " space between each number : ");
+                Date transactionDate = new Date(intInput.nextInt(), intInput.nextInt() - 1, intInput.nextInt());
+
+                findByDate(transactionDate);
+
+                break;
+            }
+            case 3: {
+
+                Account senderAccount;
+
+                System.out.println("enter your Ssn:");
+
+                String ssn = stringInput.nextLine();
+
+                Customer currentCustomer = customerRepository.findBySsn(ssn);
+
+                int accountCount = 0;
+
+                if (currentCustomer != null) {
+
+                    for (Account account : accountRepository.findByOwnerSsn(ssn)) {
+
+                        System.out.println(++accountCount + "- " + account);
+
+                    }
+
+                    System.out.print("select the account you want to see the transactions: ");
+
+                    int accountSelected = intInput.nextInt();
+
+                    if (accountSelected > 0 && accountSelected <= accountCount)
+                        senderAccount = accountRepository.findByOwnerSsn(ssn).get(accountSelected - 1);
+                    else
+                        throw new RuntimeException("input out of bounds");
+
+                } else
+                    throw new RuntimeException("this user does not exist");
+
+                System.out.print("enter date_of_birth in order of (year , month , day) with a" +
+                        " space between each number : ");
+                Date transactionDate = new Date(intInput.nextInt(), intInput.nextInt() - 1, intInput.nextInt());
+
+                findBySenderAccountAndDate(senderAccount, transactionDate);
+
+
+            }
+
+
+            default: {
+                throw new IndexOutOfBoundsException("index out of bounds");
+            }
+        }
+
+
+    }
+
+
+    @Override
+    public void findBySenderAccount(Account account) {
+
+        for (Transaction transaction : em.createQuery("from Transaction t where t.sender = : account", Transaction.class).setParameter("account", account).getResultList()) {
+            System.out.println(transaction);
+        }
+
+    }
+
+    @Override
+    public void findByDate(java.util.Date date) {
+
+        for (Transaction transaction : em.createQuery("from Transaction t where t.time = : time", Transaction.class).setParameter("time", date).getResultList()) {
+            System.out.println(transaction);
+        }
+
+    }
+
+    @Override
+    public void findBySenderAccountAndDate(Account account, java.util.Date date) {
+
+        for (Transaction transaction : em.createQuery("from Transaction t where t.time = : Time and t.sender = :account", Transaction.class).setParameter("Time", date).setParameter("account", account).getResultList()) {
+            System.out.println(transaction);
+        }
+
+    }
 }
+
+
