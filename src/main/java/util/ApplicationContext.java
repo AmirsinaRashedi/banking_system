@@ -32,7 +32,7 @@ public class ApplicationContext {
         customerRepository = new CustomerRepositoryImpl(HibernateUtil.getEntityManager(), addressRepository);
         accountRepository = new AccountRepositoryImpl(HibernateUtil.getEntityManager(), branchRepository, cardRepository, customerRepository);
         customerRepository.setAccountRepository(accountRepository);
-        transactionRepository = new TransactionRepositoryImpl(HibernateUtil.getEntityManager(), accountRepository, cardRepository);
+        transactionRepository = new TransactionRepositoryImpl(HibernateUtil.getEntityManager(), accountRepository, cardRepository, customerRepository);
         accountService = new AccountServiceImpl(accountRepository);
         branchService = new BranchServiceImpl(branchRepository);
         cardService = new CardServiceImpl(cardRepository);
