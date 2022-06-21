@@ -19,4 +19,12 @@ public class Menu {
     }
 
 
+    public static void transactionMenu() {
+        System.out.println("1- find by account");
+        System.out.println("2- find by date");
+        System.out.println("3- find using both");
+        System.out.println();
+    }
+
+
 }
