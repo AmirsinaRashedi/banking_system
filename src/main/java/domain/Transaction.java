@@ -23,7 +23,7 @@ public class Transaction extends BaseEntity<Long> {
     @Column(name = "amount")
     private Integer amount;
 
-    @Column(name = "time")
+    @Column(name = "time", columnDefinition = "DATE")
     private Date time;
 
     public Transaction() {
@@ -59,5 +59,15 @@ public class Transaction extends BaseEntity<Long> {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "sender=" + sender +
+                ", receiver=" + receiver +
+                ", amount=" + amount +
+                ", time=" + time +
+                '}';
     }
 }
