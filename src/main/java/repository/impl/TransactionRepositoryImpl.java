@@ -236,7 +236,7 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
 
                 System.out.print("enter date_of_birth in order of (year , month , day) with a" +
                         " space between each number : ");
-                Date transactionDate = new Date(intInput.nextInt(), intInput.nextInt() - 1, intInput.nextInt());
+                Date transactionDate = new Date(intInput.nextInt() - 1900, intInput.nextInt() - 1, intInput.nextInt());
 
                 findByDate(transactionDate);
 
@@ -276,7 +276,7 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
 
                 System.out.print("enter date_of_birth in order of (year , month , day) with a" +
                         " space between each number : ");
-                Date transactionDate = new Date(intInput.nextInt(), intInput.nextInt() - 1, intInput.nextInt());
+                Date transactionDate = new Date(intInput.nextInt() - 1900, intInput.nextInt() - 1, intInput.nextInt());
 
                 findBySenderAccountAndDate(senderAccount, transactionDate);
 
