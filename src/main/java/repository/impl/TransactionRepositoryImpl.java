@@ -280,15 +280,14 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
 
                 findBySenderAccountAndDate(senderAccount, transactionDate);
 
-
+                break;
             }
-
 
             default: {
                 throw new IndexOutOfBoundsException("index out of bounds");
             }
-        }
 
+        }
 
     }
 
