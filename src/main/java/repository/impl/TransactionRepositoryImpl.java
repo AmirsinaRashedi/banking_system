@@ -105,6 +105,8 @@ public class TransactionRepositoryImpl extends BaseRepositoryImpl<Transaction, L
 
         int amount = intInput.nextInt();
 
+        if (amount <= 0)
+            throw new RuntimeException("amount not acceptable!");
 
         if (amount + 500 > senderAccount.getBalance())
             throw new RuntimeException("low balance");
