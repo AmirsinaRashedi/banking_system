@@ -9,7 +9,9 @@ import repository.CustomerRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Long>
@@ -37,6 +39,7 @@ public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Long>
     public void setAccountRepository(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
+
 
     @Override
     public Class<Customer> getClassType() {
@@ -99,6 +102,106 @@ public class CustomerRepositoryImpl extends BaseRepositoryImpl<Customer, Long>
         }
 
 
+    }
+
+    @Override
+    public List<Customer> customSearch() {
+
+        Scanner stringInput = new Scanner(System.in);
+
+        String firstname = "";
+        String lastname = "";
+        String phoneNumber = "";
+        String socialSecurityNumber = "";
+
+        System.out.print("Enter firstname: ");
+
+        firstname = stringInput.nextLine();
+
+        System.out.print("Enter lastname: ");
+
+        lastname = stringInput.nextLine();
+
+        System.out.print("Enter phone number: ");
+
+        phoneNumber = stringInput.nextLine();
+
+        System.out.print("Enter Ssn: ");
+
+        socialSecurityNumber = stringInput.nextLine();
+
+
+        String fromQuery = "from Customer c ";
+
+
+        if (!firstname.isBlank()) {
+
+            if (!fromQuery.contains("where"))
+                fromQuery = fromQuery.concat("where ");
+
+            fromQuery = fromQuery.concat("c.firstName = :firstname ");
+        }
+
+        if (!lastname.isBlank()) {
+
+            if (!fromQuery.contains("where"))
+                fromQuery = fromQuery.concat("where ");
+            else
+                fromQuery = fromQuery.concat("and ");
+
+            fromQuery = fromQuery.concat("c.lastName = :lastName ");
+        }
+
+        if (!phoneNumber.isBlank()) {
+
+            if (!fromQuery.contains("where"))
+                fromQuery = fromQuery.concat("where ");
+            else
+                fromQuery = fromQuery.concat("and ");
+
+            fromQuery = fromQuery.concat("c.phoneNumber = :phoneNumber ");
+        }
+
+        if (!socialSecurityNumber.isBlank()) {
+
+            if (!fromQuery.contains("where"))
+                fromQuery = fromQuery.concat("where ");
+            else
+                fromQuery = fromQuery.concat("and ");
+
+            fromQuery = fromQuery.concat("c.Ssn = :socialSecurityNumber ");
+        }
+
+        System.out.println(fromQuery);
+
+        TypedQuery<Customer> emQuery = em.createQuery(fromQuery, Customer.class);
+
+        if (!firstname.isBlank()) {
+
+            emQuery.setParameter("firstname", firstname);
+
+        }
+
+        if (!lastname.isBlank()) {
+
+            emQuery.setParameter("lastName", lastname);
+
+        }
+
+        if (!phoneNumber.isBlank()) {
+
+            emQuery.setParameter("phoneNumber", phoneNumber);
+
+        }
+
+        if (!socialSecurityNumber.isBlank()) {
+
+            emQuery.setParameter("socialSecurityNumber", socialSecurityNumber);
+
+        }
+
+
+        return emQuery.getResultList();
     }
 
 

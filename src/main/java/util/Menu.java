@@ -15,7 +15,8 @@ public class Menu {
         System.out.println("5- change card password");
         System.out.println("6- transfer money");
         System.out.println("7- view transactions");
-        System.out.println("8- exit");
+        System.out.println("8- customer custom search");
+        System.out.println("9- exit");
     }
 
 

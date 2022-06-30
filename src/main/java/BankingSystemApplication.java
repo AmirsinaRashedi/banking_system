@@ -3,6 +3,7 @@ import domain.Customer;
 import util.ApplicationContext;
 import util.Menu;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class BankingSystemApplication {
@@ -78,6 +79,15 @@ public class BankingSystemApplication {
 
 
                     case 8: {
+
+                        List<Customer> customerList = ApplicationContext.customerRepository.customSearch();
+
+                        customerList.forEach(i -> System.out.println(i));
+
+                        break;
+                    }
+
+                    case 9: {
                         return;
                     }
 
